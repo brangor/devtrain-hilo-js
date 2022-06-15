@@ -12,12 +12,13 @@ let intro_text = [
   ' Aim of the game:',
   `  • I'll pick a number between ${RANDOM_VAL_MIN} and ${RANDOM_VAL_MAX}`,
   `  • You'll be able to guess the mystery number ${MAX_GUESSES} times`,
-  `  • I'll let you know whether you're HI or LO compared to the actual number`
+  `  • I'll let you know whether you're HI/LO compared to the actual number`
 ];
 
 const END_TEXT = [
   '',
   ' Thanks for Playing!     ',
+  '',
   '~~~~~~~~~~~HI~~~LO~~~~~~~~~~~'
 ]
 
@@ -29,9 +30,9 @@ let mystery_number = Math.floor(
     Math.random() * RANDOM_VAL_MAX
   ) + RANDOM_VAL_MIN;
 
-let game_won = false
+let game_won = false;
 
-let guess_history = []
+let guess_history = [];
 
 for (var line of intro_text) { console.log(line) }
 
