@@ -30,25 +30,28 @@ let mystery_number = Math.floor(
     Math.random() * RANDOM_VAL_MAX
   ) + RANDOM_VAL_MIN;
 
-let game_won = false;
+var game_won = false;
 
 let guess_history = [];
 
 for (var line of intro_text) { console.log(line) }
 
-while (game_won === false && guess_history.length < MAX_GUESSES) {
+while (!game_won && guess_history.length < MAX_GUESSES) {
   console.log('');
+  // validation start
+  //let valid = false
+  //while (!valid) {
+  //  valid = true;
+  //}
+  // validation end
   let guess = prompt(NEXT_GUESS_PROMPT_TEXT);
 
   if (guess > mystery_number) {
     console.log(GUESS_IS_HIGH_TEXT);
   } else if (guess < mystery_number) {
     console.log(GUESS_IS_LOW_TEXT);
-  } else if (guess === mystery_number) {
+  } else if (guess == mystery_number) {
     game_won = true;
-  } else {
-    console.log("ERROR ERROR ERROR ERROR ERROR");
-    break;
   }
 
   guess_history.push(guess);
