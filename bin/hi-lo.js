@@ -8,54 +8,54 @@ const RANDOM_VAL_MIN = 1;
 const RANDOM_VAL_MAX = 100;
 const MAX_GUESSES = 6;
 
-let intro_text = [
-  '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~HI~~~LO~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~',
-  '',
-  ' Aim of the game:',
+let introText = [
+  '\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~HI~~~LO~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~',
+  '\n Aim of the game:',
   `  ~ I'll pick a number between ${RANDOM_VAL_MIN} and ${RANDOM_VAL_MAX}`,
   `  ~ You'll be able to guess the mystery number ${MAX_GUESSES} times`,
   `  ~ I'll let you know whether you're HI/LO compared to the actual number`
 ];
 
-let END_TEXT = [
-  '',
-  ' Thanks for Playing!     ',
-  '',
-  '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~HI~~~LO~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
+let endText = [
+  '\n Thanks for Playing!',
+  '\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~HI~~~LO~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
 ]
 
 const NEXT_GUESS_PROMPT_TEXT = " GUESS ≈ ";
 const GUESS_IS_LOW_TEXT =   '  ~ LO';
 const GUESS_IS_HIGH_TEXT =  '  ~ HI';
 
-let mystery_number = Math.floor(
+let mysteryNumber = Math.floor(
     Math.random() * RANDOM_VAL_MAX
   ) + RANDOM_VAL_MIN;
 
-let game_won = false;
+let gameWon = false;
+let guessHistory = [];
 
-let guess_history = [];
+for (var line of introText) { console.log(line) }
 
-for (var line of intro_text) { console.log(line) }
+while (!gameWon && guessHistory.length < MAX_GUESSES) {
+  let promptText = ` GUESS #${guessHistory.length + 1} ≈ `;
 
-while (!game_won && guess_history.length < MAX_GUESSES) {
-  console.log('');
-
-  let guess = parseInt(prompt(` GUESS #${guess_history.length + 1} ≈ `, -1));
+  console.log();
+  let guess = prompt(promptText, -1);
 
   let valid = false
   while (!valid) {
     let issues = [];
 
-    if (!Number.isInteger(guess)) {
-      issues.push("Guess needs to be an integer.");
+    let numbersOnlyRegExp = new RegExp('^-?[0-9]*$');
+    if (!numbersOnlyRegExp.test(guess)) {
+      issues.push("Guess must be an integer.");
+    } else {
+      guess = parseInt(guess);
     }
 
     if (guess < 1 || guess > 100) {
       issues.push(`Guess outside range ${RANDOM_VAL_MIN}-${RANDOM_VAL_MAX}`);
     }
 
-    if (guess_history.includes(guess)) {
+    if (guessHistory.includes(guess)) {
       issues.push("Guess already done been guessed.");
     }
 
@@ -63,38 +63,29 @@ while (!game_won && guess_history.length < MAX_GUESSES) {
       valid = true;
     } else {
       for(var issue of issues) { console.log('  ≈ERROR≈ ' + issue) }
-      console.log('');
-      guess = parseInt(prompt(`  GUESS #${guess_history.length + 1} ≈ `, -1));
+      console.log()
+      guess = prompt(promptText, -1);
     }
   }
-  // validation end
 
-  if (guess > mystery_number) {
+  if (guess > mysteryNumber) {
     console.log(GUESS_IS_HIGH_TEXT);
-  } else if (guess < mystery_number) {
+  } else if (guess < mysteryNumber) {
     console.log(GUESS_IS_LOW_TEXT);
-  } else if (guess == mystery_number) {
-    game_won = true;
+  } else if (guess == mysteryNumber) {
+    gameWon = true;
   }
 
-  guess_history.push(guess);
+  guessHistory.push(guess);
 }
 
-let outro_text = [];
-if (game_won) {
-  outro_text = [
-    '',
-    ' You guessed it!',
-    ` Wowzers, it took you ${guess_history.length} tries.`
-  ];
-} else {
-  outro_text = [
-    '',
-    ' Bzzzzt! Game over.',
-    ` You should have guessed ${mystery_number}, that was it the whole time.`
-  ];
-}
+let outroText = ( gameWon ? [
+    '\n You guessed it!',
+    ` Wowzers, it took you ${guessHistory.length} tries.`
+  ] : [
+    '\n Bzzzzt! Game over.',
+    ` You should have guessed ${mysteryNumber}, that was it the whole time.`
+  ]);
 
-for (var line of outro_text) { console.log(line) }
-
-for (var line of END_TEXT) { console.log(line) }
+for (var line of outroText) { console.log(line) }
+for (var line of endText) { console.log(line) }
