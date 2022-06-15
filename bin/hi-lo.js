@@ -51,7 +51,7 @@ while (!gameWon && guessHistory.length < MAX_GUESSES) {
       guess = parseInt(guess);
     }
 
-    if (guess < 1 || guess > 100) {
+    if (guess < RANDOM_VAL_MIN || guess > RANDOM_VAL_MAX) {
       issues.push(`Guess outside range ${RANDOM_VAL_MIN}-${RANDOM_VAL_MAX}`);
     }
 
